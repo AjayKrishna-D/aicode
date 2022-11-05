@@ -1,93 +1,100 @@
-
-print("\n")
-print("\tGame Start\nNow the task is to move all of them to right side of the river")
-print("rules:\n1. The boat can carry at most two people\n2. If cannibals num greater then missionaries then the cannibals would eat the missionaries\n3. The boat cannot cross the river by itself with no people on board")
-lM = 3          
-lC = 3           
-rM=0           
-rC=0           
-userM = 0        
-userC = 0       
-k = 0
-print("\nM M M C C C |     --- | \n")
-try:
+initial_state = ['m','m','m','c','c','c','boat']
+left_side =  initial_state
+right_side = []
+mcount = 3
+ccount = 3
+boat_side = "left"
+#initially missionaries and cannibals are on the left side along with boat
+#boat can carry max of 2 members
+#mcount >= ccount otherwise cannibals will eat missionaries
+while(right_side!=initial_state):
     while(True):
-        while(True):
-            print("Left side -> right side river travel")
-       
-            uM = int(input("Enter number of Missionaries travel => "))   
-            uC = int(input("Enter number of Cannibals travel => "))
- 
-            if((uM==0)and(uC==0)):
-                print("Empty travel not possible")
-                print("Re-enter : ")
-            elif(((uM+uC) <= 2)and((lM-uM)>=0)and((lC-uC)>=0)):
-                break
-            else:
-                print("Wrong input re-enter : ")
-        lM = (lM-uM)
-        lC = (lC-uC)
-        rM += uM
-        rC += uC
- 
-        print("\n")
-        for i in range(0,lM):
-            print("M ",end="")
-        for i in range(0,lC):
-            print("C ",end="")
-        print("| --> | ",end="")
-        for i in range(0,rM):
-            print("M ",end="")
-        for i in range(0,rC):
-            print("C ",end="")
-        print("\n")
- 
-        k +=1
- 
-        if(((lC==3)and (lM == 1))or((lC==3)and(lM==2))or((lC==2)and(lM==1))or((rC==3)and (rM == 1))or((rC==3)and(rM==2))or((rC==2)and(rM==1))):
-            print("Cannibals eat missionaries:\nYou lost the game")
- 
+        mc = 0
+        cc = 0
+        print('Left to right side')
+        #print('Enter "r-l" for right to left')
+        if((left_side.count('m') < left_side.count('c') and left_side.count('m')>0) or (right_side.count('m')<right_side.count('c') and right_side.count('m') > 0)):
+            print('Cannibals out number missionaries ')
+            exit(0)
+        
+        mc = int(input("Enter the no of missionaries : "))
+        cc = int(input("Enter the no of cannibals : "))
+        if(mc+cc >2):
+            print("Boat can hold a max of 2 members only ")
+            print("Enter correct values\n\n")
+        elif(mc+cc<=0):
+            print("Invalid Input given")
+        else:
+            travel = []
+            #print('in else')
+            count = 0
+            #print(mc)
+            while(count < mc):
+                for i in range(len(left_side)):
+                    if(left_side[i]=='m'):
+                        #print('in if m')
+                        travel.append(left_side[i])
+                        left_side.pop(i)
+                        count = count + 1
+                        break
+            count = 0
+            while(count < cc):
+                for i in range(len(left_side)):
+                    if(left_side[i]=='c'):
+                        travel.append(left_side[i])
+                        left_side.pop(i)
+                        count = count + 1
+                        break
+            left_side.pop(len(left_side)-1)
+            right_side.extend(travel)
+            right_side.append('boat')
+            print(left_side)
+            print(right_side)
+            if(right_side.count('m')==3 and right_side.count('c')==3):
+                print("Traveled successfully")
+                exit(0)
             break
- 
-        if((rM+rC) == 6):
-            print("You won the game : \n\tCongrats")
-            print("Total attempt")
-            print(k)
+    
+    while(True):
+        mc = 0
+        cc = 0
+        print('right to left')
+        #print('Enter "l-r" for left to right')
+        if((left_side.count('m') < left_side.count('c') and left_side.count('m')>0) or (right_side.count('m')<right_side.count('c') and right_side.count('m') > 0)):
+            print('Cannibals out number missionaries ')
+            exit(0)
+        
+        mc = int(input("Enter the no of missionaries : "))
+        cc = int(input("Enter the no of cannibals : "))
+        if(mc+cc >2):
+            print("Boat can hold a max of 2 members only ")
+            print("Enter correct values\n\n")
+        elif(mc+cc<=0):
+            print("Invalid Input given")
+        else:
+            travel = []
+            #print('in else')
+            count = 0
+            #print(mc)
+            while(count < mc):
+                for i in range(len(right_side)):
+                    if(right_side[i]=='m'):
+                        print('in if m')
+                        travel.append(right_side[i])
+                        right_side.pop(i)
+                        count = count + 1
+                        break
+            count = 0
+            while(count < cc):
+                for i in range(len(right_side)):
+                    if(right_side[i]=='c'):
+                        travel.append(right_side[i])
+                        right_side.pop(i)
+                        count = count + 1
+                        break
+            right_side.pop(len(right_side)-1)
+            left_side.extend(travel)
+            left_side.append('boat')
+            print(left_side)
+            print(right_side)
             break
-        while(True):
-            print("Right side -> Left side river travel")
-            userM = int(input("Enter number of Missionaries travel => "))
-            userC = int(input("Enter number of Cannibals travel => "))
-             
-            if((userM==0)and(userC==0)):
-                    print("Empty travel not possible")
-                    print("Re-enter : ")
-            elif(((userM+userC) <= 2)and((rM-userM)>=0)and((rC-userC)>=0)):
-                break
-            else:
-                print("Wrong input re-enter : ")
-        lM += userM
-        lC += userC
-        rM -= userM
-        rC -= userC
- 
-        k +=1
-        print("\n")
-        for i in range(0,lM):
-            print("M ",end="")
-        for i in range(0,lC):
-            print("C ",end="")
-        print("| <-- | ",end="")
-        for i in range(0,rM):
-            print("M ",end="")
-        for i in range(0,rC):
-            print("C ",end="")
-        print("\n")
- 
-     
- 
-        if(((lC==3)and (lM == 1))or((lC==3)and(lM==2))or((lC==2)and(lM==1))or((rC==3)and (rM == 1))or((rC==3)and(rM==2))or((rC==2)and(rM==1))):
-            print("Cannibals eat missionaries:\nYou lost the game")
-            break
-except EOFError as e:
-    print("\nInvalid input please retry !!")
